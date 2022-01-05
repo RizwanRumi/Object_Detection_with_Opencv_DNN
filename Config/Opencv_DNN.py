@@ -11,6 +11,8 @@ class ModelConfiguration():
             network = cv.dnn.readNetFromTensorflow(self.model, self.config)
         elif dnn_name == "SSMD":
             network = cv.dnn.readNetFromCaffe(self.model, self.config)
+        elif (dnn_name == "YOLOV3"):
+            network = cv.dnn.readNetFromDarknet(self.config, self.model)
         elif(dnn_name == "YOLOV4"):
             network = cv.dnn.readNetFromDarknet(self.config, self.model)
         else:
