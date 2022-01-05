@@ -9,6 +9,8 @@ class ModelConfiguration():
     def modelConfig(self, dnn_name):
         if dnn_name == "MASK_RCNN":
             network = cv.dnn.readNetFromTensorflow(self.model, self.config)
+        elif dnn_name == "SSMD":
+            network = cv.dnn.readNetFromCaffe(self.model, self.config)
         elif(dnn_name == "YOLOV4"):
             network = cv.dnn.readNetFromDarknet(self.config, self.model)
         else:
