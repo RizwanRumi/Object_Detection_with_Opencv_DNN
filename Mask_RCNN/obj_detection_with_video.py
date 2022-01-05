@@ -8,7 +8,7 @@ import Opencv_DNN
 
 class OpencvMaskRcnn:
 
-    """ OpenCV Mask-Rcnn takes four parameter for the initialization object"""
+    """ OpenCV Mask-Rcnn takes two parameter for the initialization object"""
 
     def __init__(self, net, labelFile):
         self.net = net
@@ -72,26 +72,28 @@ if __name__ == "__main__":
 
     model = Opencv_DNN.ModelConfiguration(config_file, model_name)
 
-    net = model.modelConfig("MASKRCNN")
+    network = model.modelConfig("MASK_RCNN")
 
-    OpencvMaskRCNN = OpencvMaskRcnn(net, labels)
+    if network is not None:
+        OpencvMaskRCNN = OpencvMaskRcnn(network, labels)
 
+        cap = cv.VideoCapture(0)
 
-    cap = cv.VideoCapture(0)
+        while cap.isOpened():
+            ret, frame = cap.read()
 
-    while cap.isOpened():
-        ret, frame = cap.read()
+            boxes, masks = OpencvMaskRCNN.feed_network(frame)
+            detection_count = boxes.shape[2]
 
-        boxes, masks = OpencvMaskRCNN.feed_network(frame)
-        detection_count = boxes.shape[2]
-
-        if ret == True:
-            frame = OpencvMaskRCNN.objectDetection(frame, boxes, detection_count)
-            cv.imshow('Detection with Mask-R-CNN', frame)
-            if cv.waitKey(1) & 0xFF == ord('q'):
+            if ret == True:
+                frame = OpencvMaskRCNN.objectDetection(frame, boxes, detection_count)
+                cv.imshow('Detection with Mask-R-CNN', frame)
+                if cv.waitKey(1) & 0xFF == ord('q'):
+                    break
+            else:
                 break
-        else:
-            break
 
-    cap.release()
-    cv.destroyAllWindows()
+        cap.release()
+        cv.destroyAllWindows()
+    else:
+        print("Please check network Configuration")
