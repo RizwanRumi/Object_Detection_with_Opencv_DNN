@@ -3,10 +3,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Loading Mask RCNN
-net = cv.dnn.readNetFromTensorflow("dnn/frozen_inference_graph_coco.pb",
-                                    "dnn/mask_rcnn_inception_v2_coco_2018_01_28.pbtxt")
+net = cv.dnn.readNetFromTensorflow("custom_dnn/saved_model.pb",
+                                    "custom_dnn/label_map.pbtxt")
 
-img = cv.imread("horse.jpg")
+img = cv.imread("custom_dnn/example.jpg")
 
 height,width, channel = img.shape
 print(img.shape)
